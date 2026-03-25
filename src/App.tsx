@@ -6,6 +6,7 @@ import Header from './components/Header';
 import TruckSelector from './components/TruckSelector';
 import PalletGrid from './components/PalletGrid';
 import TruckDiagram from './components/TruckDiagram';
+import TruckInfo from './components/TruckInfo';
 import CapacityStats from './components/CapacityStats';
 import type { PalletRow, Pallet, TruckType } from './types';
 import { TRUCKS } from './constants/trucks';
@@ -46,17 +47,22 @@ export default function App() {
   return (
     <>
       <Header />
-      <Container maxWidth="lg">
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 5 }}>
-            <Paper sx={{ p: 2 }}>
+      <Container maxWidth="xl" sx={{ py: 2 }}>
+        <Grid container spacing={2} sx={{ minHeight: 'max(calc(100vh - 100px), 500px)' }}>
+          <Grid size={{ xs: 12, md: 4 }}>
+            <Paper sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
               <TruckSelector value={truckType} onChange={setTruckType} />
               <PalletGrid rows={rows} onChange={setRows} onClear={clearRows} packResult={packResult} />
             </Paper>
           </Grid>
-          <Grid size={{ xs: 12, md: 7 }}>
-            <Paper sx={{ p: 2 }}>
+          <Grid size={{ xs: 12, md: 5 }}>
+            <Paper sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
               <TruckDiagram truck={truck} packResult={packResult} />
+            </Paper>
+          </Grid>
+          <Grid size={{ xs: 12, md: 3 }}>
+            <Paper sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <TruckInfo truck={truck} />
               <CapacityStats packResult={packResult} truck={truck} />
             </Paper>
           </Grid>

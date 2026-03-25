@@ -1,5 +1,3 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 import Alert from '@mui/material/Alert';
@@ -38,42 +36,40 @@ export default function CapacityStats({ packResult, truck }: Props) {
   const totalCount = packResult.placements.length;
 
   return (
-    <Card variant="outlined" sx={{ mt: 2 }}>
-      <CardContent>
-        <Typography variant="subtitle2" gutterBottom>
-          Capacity
+    <Box sx={{ mt: 3 }}>
+      <Typography variant="subtitle2" gutterBottom>
+        Capacity
+      </Typography>
+      <Stack spacing={2}>
+        <StatBar
+          label="Weight"
+          used={packResult.totalWeight}
+          total={truck.maxPayload}
+          unit="lbs"
+        />
+        <StatBar
+          label="Floor Area"
+          used={packResult.totalFloorArea}
+          total={packResult.truckFloorArea}
+          unit="sq in"
+        />
+        <Typography variant="body2">
+          Pallets loaded: {fittingCount} / {totalCount}
         </Typography>
-        <Stack spacing={2}>
-          <StatBar
-            label="Weight"
-            used={packResult.totalWeight}
-            total={truck.maxPayload}
-            unit="lbs"
-          />
-          <StatBar
-            label="Floor Area"
-            used={packResult.totalFloorArea}
-            total={packResult.truckFloorArea}
-            unit="sq in"
-          />
-          <Typography variant="body2">
-            Pallets loaded: {fittingCount} / {totalCount}
-          </Typography>
-          {packResult.overweight && (
-            <Alert severity="error" variant="filled">
-              Over weight limit by {(packResult.totalWeight - truck.maxPayload).toLocaleString()} lbs
-            </Alert>
-          )}
-          {!packResult.allFit && (
-            <Alert severity="warning" variant="filled">
-              {totalCount - fittingCount} pallet(s) do not fit on the truck floor
-            </Alert>
-          )}
-          {packResult.allFit && !packResult.overweight && totalCount > 0 && (
-            <Alert severity="success">All pallets fit!</Alert>
-          )}
-        </Stack>
-      </CardContent>
-    </Card>
+        {packResult.overweight && (
+          <Alert severity="error" variant="filled">
+            Over weight limit by {(packResult.totalWeight - truck.maxPayload).toLocaleString()} lbs
+          </Alert>
+        )}
+        {!packResult.allFit && (
+          <Alert severity="warning" variant="filled">
+            {totalCount - fittingCount} pallet(s) do not fit on the truck floor
+          </Alert>
+        )}
+        {packResult.allFit && !packResult.overweight && totalCount > 0 && (
+          <Alert severity="success">All pallets fit!</Alert>
+        )}
+      </Stack>
+    </Box>
   );
 }
