@@ -4,37 +4,45 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Header from './components/Header';
 import TruckSelector from './components/TruckSelector';
-import PalletForm from './components/PalletForm';
-import PalletList from './components/PalletList';
+import PalletGrid from './components/PalletGrid';
 import TruckDiagram from './components/TruckDiagram';
 import CapacityStats from './components/CapacityStats';
-import type { Pallet, TruckType } from './types';
+import type { PalletRow, Pallet, TruckType } from './types';
 import { TRUCKS } from './constants/trucks';
 import { packPallets } from './utils/packing';
 
+function rowsToPallets(rows: PalletRow[]): Pallet[] {
+  return rows
+    .filter((r) => r.length != null && r.width != null && r.height != null && r.length > 0 && r.width > 0 && r.height > 0)
+    .map((r) => ({
+      id: r.id,
+      length: r.length!,
+      width: r.width!,
+      height: r.height!,
+      weight: r.weight ?? undefined,
+    }));
+}
+
 export default function App() {
-  const [pallets, setPallets] = useState<Pallet[]>([]);
+  const [rows, setRows] = useState<PalletRow[]>([]);
   const [truckType, setTruckType] = useState<TruckType>('53ft');
 
   const truck = TRUCKS[truckType];
+  const pallets = useMemo(() => rowsToPallets(rows), [rows]);
   const packResult = useMemo(() => packPallets(pallets, truck), [pallets, truck]);
-
-  const addPallet = (pallet: Pallet) => setPallets((prev) => [...prev, pallet]);
-  const deletePallet = (id: string) => setPallets((prev) => prev.filter((p) => p.id !== id));
 
   return (
     <>
       <Header />
       <Container maxWidth="lg">
         <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 4 }}>
+          <Grid size={{ xs: 12, md: 5 }}>
             <Paper sx={{ p: 2 }}>
               <TruckSelector value={truckType} onChange={setTruckType} />
-              <PalletForm onAdd={addPallet} />
-              <PalletList pallets={pallets} packResult={packResult} onDelete={deletePallet} />
+              <PalletGrid rows={rows} onChange={setRows} packResult={packResult} />
             </Paper>
           </Grid>
-          <Grid size={{ xs: 12, md: 8 }}>
+          <Grid size={{ xs: 12, md: 7 }}>
             <Paper sx={{ p: 2 }}>
               <TruckDiagram truck={truck} packResult={packResult} />
               <CapacityStats packResult={packResult} truck={truck} />

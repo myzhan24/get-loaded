@@ -1,10 +1,17 @@
 export interface Pallet {
   id: string;
-  label: string;
   length: number; // inches (depth into truck)
   width: number; // inches (across truck width)
   height: number; // inches
-  weight: number; // lbs
+  weight?: number; // lbs (optional)
+}
+
+export interface PalletRow {
+  id: string;
+  length: number | null;
+  width: number | null;
+  height: number | null;
+  weight: number | null;
 }
 
 export interface TruckSpec {

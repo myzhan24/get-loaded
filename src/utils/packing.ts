@@ -35,7 +35,7 @@ export function packPallets(pallets: Pallet[], truck: TruckSpec): PackResult {
     }
   }
 
-  const totalWeight = pallets.reduce((sum, p) => sum + p.weight, 0);
+  const totalWeight = pallets.reduce((sum, p) => sum + (p.weight ?? 0), 0);
   const totalFloorArea = pallets.reduce((sum, p) => sum + p.length * p.width, 0);
   const truckFloorArea = truck.interiorLength * truck.interiorWidth;
   const allFit = placements.every((p) => p.fits);
