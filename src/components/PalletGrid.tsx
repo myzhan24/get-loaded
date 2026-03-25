@@ -32,14 +32,13 @@ export default function PalletGrid({ rows, onChange, onClear, packResult }: Prop
   );
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
+    <>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
         <Typography variant="subtitle2">Pallets</Typography>
         <Button size="small" startIcon={<DeleteOutlineIcon />} onClick={onClear}>
           Clear
         </Button>
       </Box>
-      <Box sx={{ flex: 1, minHeight: 0, overflow: 'auto' }}>
       <DynamicDataSheetGrid
         value={rows}
         onChange={onChange as (value: Record<string, any>[]) => void}
@@ -53,12 +52,11 @@ export default function PalletGrid({ rows, onChange, onClear, packResult }: Prop
         autoAddRow
         lockRows={false}
       />
-      </Box>
       <style>{`
         .row-no-fit .dsg-cell {
           background-color: #ffebee !important;
         }
       `}</style>
-    </Box>
+    </>
   );
 }

@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -46,29 +45,29 @@ export default function App() {
   const clearRows = () => setRows(Array.from({ length: 10 }, createEmptyRow));
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100dvh', minHeight: 564 }}>
+    <>
       <Header />
-      <Container maxWidth="xl" sx={{ py: 2, flex: 1, minHeight: 0 }}>
-        <Grid container spacing={2} sx={{ height: '100%' }}>
+      <Container maxWidth="xl" sx={{ py: 2 }}>
+        <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 6 }}>
-            <Paper sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Paper sx={{ p: 2 }}>
               <TruckSelector value={truckType} onChange={setTruckType} />
               <PalletGrid rows={rows} onChange={setRows} onClear={clearRows} packResult={packResult} />
             </Paper>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
-            <Paper sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Paper sx={{ p: 2 }}>
               <TruckDiagram truck={truck} packResult={packResult} />
             </Paper>
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <Paper sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Paper sx={{ p: 2 }}>
               <TruckInfo truck={truck} />
               <CapacityStats packResult={packResult} truck={truck} />
             </Paper>
           </Grid>
         </Grid>
       </Container>
-    </Box>
+    </>
   );
 }
