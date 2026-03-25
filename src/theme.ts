@@ -1,6 +1,9 @@
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
+  typography: {
+    fontFamily: '"Lilita One", cursive',
+  },
   palette: {
     primary: {
       main: '#8d6531',
