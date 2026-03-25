@@ -1,6 +1,7 @@
 import {
   DynamicDataSheetGrid,
   floatColumn,
+  intColumn,
   keyColumn,
 } from 'react-datasheet-grid';
 import 'react-datasheet-grid/dist/style.css';
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const columns = [
+  { ...keyColumn('quantity', intColumn), title: 'Qty', minWidth: 60 },
   { ...keyColumn('length', floatColumn), title: 'Length (in)', minWidth: 100 },
   { ...keyColumn('width', floatColumn), title: 'Width (in)', minWidth: 100 },
   { ...keyColumn('height', floatColumn), title: 'Height (in)', minWidth: 100 },
@@ -34,7 +36,7 @@ export default function PalletGrid({ rows, onChange, packResult }: Props) {
         value={rows}
         onChange={onChange as (value: Record<string, any>[]) => void}
         columns={columns}
-        createRow={() => ({ id: crypto.randomUUID(), length: null, width: null, height: null, weight: null })}
+        createRow={() => ({ id: crypto.randomUUID(), quantity: null, length: null, width: null, height: null, weight: null })}
         rowClassName={({ rowData }) => {
           const fits = fitMap.get(rowData.id);
           if (fits === false) return 'row-no-fit';

@@ -11,20 +11,30 @@ import type { PalletRow, Pallet, TruckType } from './types';
 import { TRUCKS } from './constants/trucks';
 import { packPallets } from './utils/packing';
 
+function createEmptyRow(): PalletRow {
+  return { id: crypto.randomUUID(), quantity: null, length: null, width: null, height: null, weight: null };
+}
+
 function rowsToPallets(rows: PalletRow[]): Pallet[] {
-  return rows
-    .filter((r) => r.length != null && r.width != null && r.height != null && r.length > 0 && r.width > 0 && r.height > 0)
-    .map((r) => ({
-      id: r.id,
-      length: r.length!,
-      width: r.width!,
-      height: r.height!,
-      weight: r.weight ?? undefined,
-    }));
+  const pallets: Pallet[] = [];
+  for (const r of rows) {
+    if (r.length == null || r.width == null || r.height == null || r.length <= 0 || r.width <= 0 || r.height <= 0) continue;
+    const qty = r.quantity != null && r.quantity > 0 ? r.quantity : 1;
+    for (let i = 0; i < qty; i++) {
+      pallets.push({
+        id: `${r.id}-${i}`,
+        length: r.length,
+        width: r.width,
+        height: r.height,
+        weight: r.weight ?? undefined,
+      });
+    }
+  }
+  return pallets;
 }
 
 export default function App() {
-  const [rows, setRows] = useState<PalletRow[]>([]);
+  const [rows, setRows] = useState<PalletRow[]>(() => Array.from({ length: 10 }, createEmptyRow));
   const [truckType, setTruckType] = useState<TruckType>('53ft');
 
   const truck = TRUCKS[truckType];

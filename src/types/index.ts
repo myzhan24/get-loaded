@@ -8,6 +8,7 @@ export interface Pallet {
 
 export interface PalletRow {
   id: string;
+  quantity: number | null;
   length: number | null;
   width: number | null;
   height: number | null;
