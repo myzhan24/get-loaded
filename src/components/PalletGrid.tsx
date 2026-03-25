@@ -8,7 +8,7 @@ import 'react-datasheet-grid/dist/style.css';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import ClearAllIcon from '@mui/icons-material/ClearAll';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import type { PalletRow, PackResult } from '../types';
 
 interface Props {
@@ -35,7 +35,7 @@ export default function PalletGrid({ rows, onChange, onClear, packResult }: Prop
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
         <Typography variant="subtitle2">Pallets</Typography>
-        <Button size="small" startIcon={<ClearAllIcon />} onClick={onClear}>
+        <Button size="small" startIcon={<DeleteOutlineIcon />} onClick={onClear}>
           Clear
         </Button>
       </Box>
