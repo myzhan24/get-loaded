@@ -48,19 +48,19 @@ export default function App() {
     <>
       <Header />
       <Container maxWidth="xl" sx={{ py: 2 }}>
-        <Grid container spacing={2} sx={{ minHeight: 'max(calc(100vh - 100px), 500px)' }}>
+        <Grid container spacing={2} sx={{ height: 'calc(100dvh - 96px)', minHeight: 500 }}>
           <Grid size={{ xs: 12, md: 4 }}>
             <Paper sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
               <TruckSelector value={truckType} onChange={setTruckType} />
               <PalletGrid rows={rows} onChange={setRows} onClear={clearRows} packResult={packResult} />
             </Paper>
           </Grid>
-          <Grid size={{ xs: 12, md: 5 }}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Paper sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
               <TruckDiagram truck={truck} packResult={packResult} />
             </Paper>
           </Grid>
-          <Grid size={{ xs: 12, md: 3 }}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Paper sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
               <TruckInfo truck={truck} />
               <CapacityStats packResult={packResult} truck={truck} />
