@@ -18,6 +18,14 @@ export default function TruckDiagram({ truck, packResult }: Props) {
   const viewW = truck.interiorWidth + padding * 2;
   const viewH = truck.interiorLength + padding * 2;
 
+  const floorPallets = packResult.placements
+    .map((p, i) => ({ ...p, index: i }))
+    .filter((p) => p.fits && p.stackedOn === null);
+
+  const stackedPallets = packResult.placements
+    .map((p, i) => ({ ...p, index: i }))
+    .filter((p) => p.fits && p.stackedOn !== null);
+
   return (
     <Box>
       <Typography variant="subtitle2" gutterBottom>
@@ -67,11 +75,9 @@ export default function TruckDiagram({ truck, packResult }: Props) {
             REAR DOOR
           </text>
 
-          {/* Placed pallets */}
-          {packResult.placements.map((placement, i) => {
-            if (!placement.fits) return null;
-            const { pallet, x, y } = placement;
-            const color = PALLET_COLORS[i % PALLET_COLORS.length];
+          {/* Floor-level pallets */}
+          {floorPallets.map(({ pallet, x, y, index }) => {
+            const color = PALLET_COLORS[index % PALLET_COLORS.length];
             return (
               <g key={pallet.id}>
                 <rect
@@ -93,7 +99,59 @@ export default function TruckDiagram({ truck, packResult }: Props) {
                   fill="#fff"
                   fontWeight="bold"
                 >
-                  {i + 1}
+                  {index + 1}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* Stacked pallets — dashed stroke, lower opacity */}
+          {stackedPallets.map(({ pallet, x, y, index }) => {
+            const color = PALLET_COLORS[index % PALLET_COLORS.length];
+            const fontSize = Math.min(pallet.width, pallet.length) * 0.3;
+            return (
+              <g key={pallet.id}>
+                <rect
+                  x={padding + x}
+                  y={padding + y}
+                  width={pallet.width}
+                  height={pallet.length}
+                  fill={color}
+                  fillOpacity={0.45}
+                  stroke={color}
+                  strokeWidth={1.5}
+                  strokeDasharray="4,2"
+                />
+                <text
+                  x={padding + x + pallet.width / 2}
+                  y={padding + y + pallet.length / 2}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  fontSize={fontSize}
+                  fill="#fff"
+                  fontWeight="bold"
+                >
+                  {index + 1}
+                </text>
+                {/* Stacked indicator badge */}
+                <circle
+                  cx={padding + x + pallet.width - 4}
+                  cy={padding + y + 4}
+                  r={3}
+                  fill="#fff"
+                  stroke={color}
+                  strokeWidth={0.5}
+                />
+                <text
+                  x={padding + x + pallet.width - 4}
+                  y={padding + y + 4}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  fontSize={3.5}
+                  fill={color}
+                  fontWeight="bold"
+                >
+                  S
                 </text>
               </g>
             );

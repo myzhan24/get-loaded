@@ -1,5 +1,6 @@
 import {
   DynamicDataSheetGrid,
+  checkboxColumn,
   floatColumn,
   intColumn,
   keyColumn,
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const columns = [
+  { ...keyColumn('stackable', checkboxColumn), title: 'Stack', minWidth: 50 },
   { ...keyColumn('quantity', intColumn), title: 'Qty', minWidth: 60 },
   { ...keyColumn('length', floatColumn), title: 'Length (in)', minWidth: 100 },
   { ...keyColumn('width', floatColumn), title: 'Width (in)', minWidth: 100 },
@@ -43,7 +45,7 @@ export default function PalletGrid({ rows, onChange, onClear, packResult }: Prop
         value={rows}
         onChange={onChange as (value: Record<string, any>[]) => void}
         columns={columns}
-        createRow={() => ({ id: crypto.randomUUID(), quantity: null, length: null, width: null, height: null, weight: null })}
+        createRow={() => ({ id: crypto.randomUUID(), stackable: null, quantity: null, length: null, width: null, height: null, weight: null })}
         rowClassName={({ rowData }) => {
           const fits = fitMap.get(rowData.id);
           if (fits === false) return 'row-no-fit';

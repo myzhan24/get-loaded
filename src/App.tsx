@@ -13,7 +13,7 @@ import { TRUCKS } from './constants/trucks';
 import { packPallets } from './utils/packing';
 
 function createEmptyRow(): PalletRow {
-  return { id: crypto.randomUUID(), quantity: null, length: null, width: null, height: null, weight: null };
+  return { id: crypto.randomUUID(), stackable: null, quantity: null, length: null, width: null, height: null, weight: null };
 }
 
 function rowsToPallets(rows: PalletRow[]): Pallet[] {
@@ -28,6 +28,7 @@ function rowsToPallets(rows: PalletRow[]): Pallet[] {
         width: r.width,
         height: r.height,
         weight: r.weight ?? undefined,
+        stackable: r.stackable ?? false,
       });
     }
   }

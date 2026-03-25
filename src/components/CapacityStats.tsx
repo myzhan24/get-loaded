@@ -33,6 +33,7 @@ function StatBar({ label, used, total, unit }: { label: string; used: number; to
 
 export default function CapacityStats({ packResult, truck }: Props) {
   const fittingCount = packResult.placements.filter((p) => p.fits).length;
+  const stackedCount = packResult.placements.filter((p) => p.fits && p.stackedOn !== null).length;
   const totalCount = packResult.placements.length;
 
   return (
@@ -49,12 +50,12 @@ export default function CapacityStats({ packResult, truck }: Props) {
         />
         <StatBar
           label="Floor Area"
-          used={packResult.totalFloorArea}
+          used={packResult.usedFloorArea}
           total={packResult.truckFloorArea}
           unit="sq in"
         />
         <Typography variant="body2">
-          Pallets loaded: {fittingCount} / {totalCount}
+          Pallets loaded: {fittingCount} / {totalCount}{stackedCount > 0 && ` (${stackedCount} stacked)`}
         </Typography>
         {packResult.overweight && (
           <Alert severity="error" variant="filled">
