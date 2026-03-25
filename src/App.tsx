@@ -41,6 +41,8 @@ export default function App() {
   const pallets = useMemo(() => rowsToPallets(rows), [rows]);
   const packResult = useMemo(() => packPallets(pallets, truck), [pallets, truck]);
 
+  const clearRows = () => setRows(Array.from({ length: 10 }, createEmptyRow));
+
   return (
     <>
       <Header />
@@ -49,7 +51,7 @@ export default function App() {
           <Grid size={{ xs: 12, md: 5 }}>
             <Paper sx={{ p: 2 }}>
               <TruckSelector value={truckType} onChange={setTruckType} />
-              <PalletGrid rows={rows} onChange={setRows} packResult={packResult} />
+              <PalletGrid rows={rows} onChange={setRows} onClear={clearRows} packResult={packResult} />
             </Paper>
           </Grid>
           <Grid size={{ xs: 12, md: 7 }}>

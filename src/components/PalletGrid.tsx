@@ -5,12 +5,16 @@ import {
   keyColumn,
 } from 'react-datasheet-grid';
 import 'react-datasheet-grid/dist/style.css';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import ClearAllIcon from '@mui/icons-material/ClearAll';
 import type { PalletRow, PackResult } from '../types';
 
 interface Props {
   rows: PalletRow[];
   onChange: (rows: PalletRow[]) => void;
+  onClear: () => void;
   packResult: PackResult;
 }
 
@@ -22,16 +26,19 @@ const columns = [
   { ...keyColumn('weight', floatColumn), title: 'Weight (lbs)', minWidth: 100 },
 ];
 
-export default function PalletGrid({ rows, onChange, packResult }: Props) {
+export default function PalletGrid({ rows, onChange, onClear, packResult }: Props) {
   const fitMap = new Map(
     packResult.placements.map((p) => [p.pallet.id, p.fits])
   );
 
   return (
     <>
-      <Typography variant="subtitle2" gutterBottom>
-        Pallets
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+        <Typography variant="subtitle2">Pallets</Typography>
+        <Button size="small" startIcon={<ClearAllIcon />} onClick={onClear}>
+          Clear
+        </Button>
+      </Box>
       <DynamicDataSheetGrid
         value={rows}
         onChange={onChange as (value: Record<string, any>[]) => void}
