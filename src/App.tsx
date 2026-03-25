@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -45,30 +46,32 @@ export default function App() {
 
   const clearRows = () => setRows(Array.from({ length: 10 }, createEmptyRow));
 
+  const cardSx = { p: 2, backgroundColor: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(4px)' };
+
   return (
-    <>
+    <Box sx={{ backgroundImage: `url(${import.meta.env.BASE_URL}644729.png)`, backgroundSize: 'cover', backgroundRepeat: 'repeat', minHeight: '100vh' }}>
       <Header />
       <Container maxWidth="xl" sx={{ py: 2 }}>
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 6 }}>
-            <Paper sx={{ p: 2 }}>
+            <Paper sx={cardSx}>
               <TruckSelector value={truckType} onChange={setTruckType} />
               <PalletGrid rows={rows} onChange={setRows} onClear={clearRows} packResult={packResult} />
             </Paper>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
-            <Paper sx={{ p: 2 }}>
+            <Paper sx={cardSx}>
               <TruckDiagram truck={truck} packResult={packResult} />
             </Paper>
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
-            <Paper sx={{ p: 2 }}>
+            <Paper sx={cardSx}>
               <TruckInfo truck={truck} />
               <CapacityStats packResult={packResult} truck={truck} />
             </Paper>
           </Grid>
         </Grid>
       </Container>
-    </>
+    </Box>
   );
 }
