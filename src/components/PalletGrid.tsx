@@ -9,13 +9,21 @@ import 'react-datasheet-grid/dist/style.css';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import UndoIcon from '@mui/icons-material/Undo';
+import RedoIcon from '@mui/icons-material/Redo';
 import type { PalletRow, PackResult } from '../types';
 
 interface Props {
   rows: PalletRow[];
   onChange: (rows: PalletRow[]) => void;
   onClear: () => void;
+  onUndo: () => void;
+  onRedo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
   packResult: PackResult;
 }
 
@@ -28,7 +36,7 @@ const columns = [
   { ...keyColumn('weight', floatColumn), title: 'Weight (lbs)', minWidth: 100 },
 ];
 
-export default function PalletGrid({ rows, onChange, onClear, packResult }: Props) {
+export default function PalletGrid({ rows, onChange, onClear, onUndo, onRedo, canUndo, canRedo, packResult }: Props) {
   const fitMap = new Map(
     packResult.placements.map((p) => [p.pallet.id, p.fits])
   );
@@ -37,9 +45,25 @@ export default function PalletGrid({ rows, onChange, onClear, packResult }: Prop
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
         <Typography variant="subtitle2">Pallets</Typography>
-        <Button size="small" startIcon={<DeleteOutlineIcon />} onClick={onClear}>
-          Clear
-        </Button>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Tooltip title="Undo (Ctrl+Z)">
+            <span>
+              <IconButton size="small" onClick={onUndo} disabled={!canUndo}>
+                <UndoIcon fontSize="small" />
+              </IconButton>
+            </span>
+          </Tooltip>
+          <Tooltip title="Redo (Ctrl+Shift+Z)">
+            <span>
+              <IconButton size="small" onClick={onRedo} disabled={!canRedo}>
+                <RedoIcon fontSize="small" />
+              </IconButton>
+            </span>
+          </Tooltip>
+          <Button size="small" startIcon={<DeleteOutlineIcon />} onClick={onClear}>
+            Clear
+          </Button>
+        </Box>
       </Box>
       <DynamicDataSheetGrid
         value={rows}
