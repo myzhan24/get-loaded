@@ -50,13 +50,13 @@ export default function App() {
       <Header />
       <Container maxWidth="xl" sx={{ py: 2, flex: 1, minHeight: 0 }}>
         <Grid container spacing={2} sx={{ height: '100%' }}>
-          <Grid size={{ xs: 12, md: 4 }}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Paper sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
               <TruckSelector value={truckType} onChange={setTruckType} />
               <PalletGrid rows={rows} onChange={setRows} onClear={clearRows} packResult={packResult} />
             </Paper>
           </Grid>
-          <Grid size={{ xs: 12, md: 4 }}>
+          <Grid size={{ xs: 12, md: 2 }}>
             <Paper sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
               <TruckDiagram truck={truck} packResult={packResult} />
             </Paper>
