@@ -25,7 +25,7 @@ export interface TruckSpec {
   maxPayload: number; // lbs
 }
 
-export type TruckType = '53ft' | '26ft';
+export type TruckType = '53ft' | '48ft' | '26ft';
 
 export interface PlacedPallet {
   pallet: Pallet;
