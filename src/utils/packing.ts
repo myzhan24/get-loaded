@@ -6,32 +6,37 @@ export function packPallets(pallets: Pallet[], truck: TruckSpec): PackResult {
   let cursorY = 0;
   let currentRowDepth = 0;
 
-  // Track which floor-level placements already have a pallet stacked on them
-  const hasStack = new Set<number>();
+  // Track the top of each vertical column: floor-level index -> { topIndex, cumulativeHeight }
+  const columnTop = new Map<number, { topIndex: number; cumulativeHeight: number }>();
 
   for (const pallet of pallets) {
     let placed = false;
 
-    // Phase 1: If stackable, try to stack on an existing floor pallet
+    // Phase 1: If stackable, try to stack on an existing column
     if (pallet.stackable) {
       for (let i = 0; i < placements.length; i++) {
         const base = placements[i];
-        if (base.stackedOn !== null) continue; // only stack on floor-level pallets
-        if (!base.pallet.stackable) continue; // base must be stackable too
-        if (hasStack.has(i)) continue; // single-level stacking only
-        if (!base.fits) continue; // don't stack on non-fitting pallets
-        if (pallet.width > base.pallet.width || pallet.length > base.pallet.length) continue; // footprint check
-        if (base.pallet.height + pallet.height > truck.interiorHeight) continue; // height check
+        if (base.stackedOn !== null) continue; // only iterate floor-level pallets
+        if (!base.pallet.stackable) continue;
+        if (!base.fits) continue;
 
+        const col = columnTop.get(i) ?? { topIndex: i, cumulativeHeight: base.pallet.height };
+        const topPallet = placements[col.topIndex].pallet;
+
+        if (!topPallet.stackable) continue;
+        if (pallet.width > topPallet.width || pallet.length > topPallet.length) continue;
+        if (col.cumulativeHeight + pallet.height > truck.interiorHeight) continue;
+
+        const newIndex = placements.length;
         placements.push({
           pallet,
           x: base.x,
           y: base.y,
-          z: base.pallet.height,
-          stackedOn: i,
+          z: col.cumulativeHeight,
+          stackedOn: col.topIndex,
           fits: true,
         });
-        hasStack.add(i);
+        columnTop.set(i, { topIndex: newIndex, cumulativeHeight: col.cumulativeHeight + pallet.height });
         placed = true;
         break;
       }

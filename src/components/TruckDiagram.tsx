@@ -26,6 +26,16 @@ export default function TruckDiagram({ truck, packResult }: Props) {
     .map((p, i) => ({ ...p, index: i }))
     .filter((p) => p.fits && p.stackedOn !== null);
 
+  function stackLevel(index: number): number {
+    let level = 0;
+    let cur: number | null = index;
+    while (cur !== null) {
+      level++;
+      cur = packResult.placements[cur].stackedOn;
+    }
+    return level;
+  }
+
   return (
     <Box>
       <Typography variant="subtitle2" gutterBottom>
@@ -151,7 +161,7 @@ export default function TruckDiagram({ truck, packResult }: Props) {
                   fill={color}
                   fontWeight="bold"
                 >
-                  S
+                  {stackLevel(index)}
                 </text>
               </g>
             );
